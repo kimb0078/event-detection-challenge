@@ -21,7 +21,7 @@ Build an **event detector** that:
 ### 1. Detects overflow events using:
 - **`threshold`**: `0.0 m` (value `> threshold` marks overflow samples)  
 - **`minDuration`**: minimum contiguous overflow duration to accept an event *(default: 5 minutes)*  
-- **`maxGap`**: allow stitching of short dry gaps between overflow samples into the same event *(default: 60 minutes)*  
+- **`maxGap`**: allow stitching of short events into one larger event, if they occur within `maxGap` time period of each other *(default: 10 minutes)*  
 
 ### 2. Outputs an ordered list of events with:
 - `start`, `end`, `durationMinutes`  
@@ -59,8 +59,7 @@ Build an **event detector** that:
 
 ## 💡 Hints/Implementation Notes (to keep you on-rails)
 
-- Treat input as **monotonically increasing timestamps** at 2-minute steps; if gaps exist, the algorithm should still behave.  
+- Treat input as **always increasing timestamps** at 2-minute steps; if gaps exist, the algorithm should still operate under same assumptions as above (e.g. `minDuration`, `maxGap`).  
 - Prefer a **single linear pass**; maintain rolling state for current event (start, last_seen, peak, running length); “close” when dry gap exceeds maxGap.
 - Be explicit about **inclusive/exclusive end time** — note it in your README and test against it.  
-- Use **UTC time handling**; don’t localize.  
-- Reject samples <= threshold.
+- Use **UTC time handling**; don’t localize. 
