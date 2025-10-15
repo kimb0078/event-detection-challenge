@@ -17,14 +17,9 @@ Build an **event detector** that:
 ### 2. Outputs an ordered list of events with:
 - `start`, `end`, `durationMinutes`  
 - `peakValue` *(max)*  
-- `sumExceedance` *(∑ (value - threshold) · Δt)* — treat **Δt = 60 s per sample**
 
-### 3. Exposes the result two ways:
-- **CLI:**  
-  ```bash
-  detect --input data/month.csv --minDuration 5 --maxGap 2 --threshold 0.0 --out events.json
-  ```
-- **HTTP (optional but recommended):**  
+### 3. Exposes the results:
+- **HTTP:**  
   ```
   GET /events?minDuration=...&maxGap=...&threshold=...
   ```
@@ -37,7 +32,7 @@ Build an **event detector** that:
 -  Working detector with CLI  
 -  Unit tests *(happy path + edge cases)*  
 -  README explaining how to run and your assumptions  
-- 💡 **Bonus:** HTTP endpoint and summary stats  
+- 💡 **Bonus:** Add Dockerfile for your application and expose the HTTP endpoint as mentioned in Task section #3
 
 ---
 
@@ -55,8 +50,7 @@ Build an **event detector** that:
 
 ## 💡 Hints (to keep you on-rails)
 
-- Treat input as **monotonically increasing timestamps** at 1-minute steps; if gaps exist, the algorithm should still behave.  
-- Prefer a **single linear pass** with a simple state machine:  
-  `idle → inEvent → maybeGap → inEvent`.  
+- Treat input as **monotonically increasing timestamps** at 2-minute steps; if gaps exist, the algorithm should still behave.  
+- Prefer a **single linear pass** 
 - Be explicit about **inclusive/exclusive end time** — note it in your README and test against it.  
 - Use **UTC time handling**; don’t localize.  
