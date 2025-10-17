@@ -12,9 +12,6 @@ var measurements = arrayList
     .Select(a => new Measurement((long)a[0], a[1]))
     .ToList();
 
-if (measurements == null)
-    throw new InvalidOperationException("Failed to parse JSON data.");
-
 // GET /events?threshold=0.0&minDuration=5&maxGap=10
 app.MapGet("/events", (double? threshold, int? minDuration, int? maxGap) =>
 {
@@ -31,6 +28,3 @@ app.MapGet("/events", (double? threshold, int? minDuration, int? maxGap) =>
 });
 
 app.Run();
-
-
-

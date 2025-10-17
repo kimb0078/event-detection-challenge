@@ -21,10 +21,10 @@ public class EventDetectorTest
         _measurementsSingleEvent = new List<Measurement>
         {
             new Measurement(0, 0),
-            new Measurement(60000, 5),
-            new Measurement(120000, 10),
-            new Measurement(180000, 5),
-            new Measurement(240000, 0)
+            new Measurement(120000, 5),
+            new Measurement(240000, 10),
+            new Measurement(360000, 5),
+            new Measurement(480000, 0)
         };
     }
 
@@ -53,9 +53,9 @@ public class EventDetectorTest
         var measurements = new List<Measurement>
         {
             new Measurement(0, 0),
-            new Measurement(60000, 0),
             new Measurement(120000, 0),
-        };;
+            new Measurement(240000, 0),
+        };
         var threshold = _thresholdDefault;
         var minDuration = _minDurationDefault;
         var maxGap = _maxGapDefault;
@@ -92,10 +92,10 @@ public class EventDetectorTest
         var measurements = new List<Measurement>
         {
             new Measurement(0, 0),
-            new Measurement(60000, 5),    // above threshold (1 min)
-            new Measurement(120000, 0),   // short gap (1 min) - within maxGap
-            new Measurement(180000, 5),   // above threshold again (3 min)
-            new Measurement(240000, 0)
+            new Measurement(120000, 5),    // above threshold (2 min)
+            new Measurement(240000, 0),    // short gap (2 min) - within maxGap
+            new Measurement(360000, 5),    // above threshold again (6 min)
+            new Measurement(480000, 0)
         };
         var threshold = _thresholdDefault;
         var minDuration = _minDurationDefault;
@@ -108,8 +108,8 @@ public class EventDetectorTest
         Assert.IsTrue(events.Count == 1);
 
         var ev = events[0];
-        var expectedStart = DateTimeOffset.FromUnixTimeMilliseconds(60000).UtcDateTime;
-        var expectedEnd = DateTimeOffset.FromUnixTimeMilliseconds(180000).UtcDateTime;
+        var expectedStart = DateTimeOffset.FromUnixTimeMilliseconds(120000).UtcDateTime;
+        var expectedEnd = DateTimeOffset.FromUnixTimeMilliseconds(360000).UtcDateTime;
         Assert.AreEqual(expectedStart, ev.Start);
         Assert.AreEqual(expectedEnd, ev.End);
     }
@@ -122,10 +122,10 @@ public class EventDetectorTest
         var measurements = new List<Measurement>
         {
             new Measurement(0, 0),
-            new Measurement(60000, 5),    // event starts at 1 min
-            new Measurement(120000, 5),   // still above at 2 min
-            new Measurement(180000, 5),   // still above at 3 min
-            new Measurement(240000, 0)    // event ends before 5 min minimum
+            new Measurement(120000, 5),    // event starts at 2 min
+            new Measurement(240000, 5),    // still above at 4 min
+            new Measurement(360000, 5),    // still above at 6 min
+            new Measurement(480000, 0)     // event ends before 5 min minimum
         };
         var threshold = _thresholdDefault;
         var minDuration = _minDurationDefault; // 5 minutes

@@ -63,3 +63,37 @@ Build an **event detector** that:
 - Prefer a **single linear pass**; maintain rolling state for current event (start, last_seen, peak, running length); “close” when dry gap exceeds maxGap.
 - Be explicit about **inclusive/exclusive end time** — note it in your README and test against it.  
 - Use **UTC time handling**; don’t localize. 
+
+## My Implementation
+
+I decided to implement this coding challenge in C# as my first C# project, because I wanted to demonstrate my ability to learn it, get to know new tools and to challenge myself.
+
+### Notes
+
+- Query parameters: minDuration (minutes), maxGap (minutes), threshold (meters). Defaults used if omitted.
+- Timestamps are UTC
+- The end time is set by the last measurement in an event, so the end time is inclusive.
+
+### Assumptions
+
+- `maxGap` is the maximum time interval since the last measurement over the threshold.
+- Measurements equal to the threshold are treated as below threshold.
+- Measurements are pre-sorted by timestamp
+
+### How to run
+
+Prerequisites:
+- Install Docker CLI
+
+- Build image:
+  ```
+  docker build -t event-detector .
+  ```
+- Run container:
+  ```
+  docker run -p 8080:8080 event-detector
+  ```
+- Then query:
+  ```
+  curl 'http://localhost:8080/events'
+  ```
