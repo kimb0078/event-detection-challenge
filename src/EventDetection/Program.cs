@@ -1,11 +1,17 @@
 using System.Text.Json;
+using EventDetection.Models;
+using EventDetection.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 // Load input data
-var json = File.ReadAllText("overflow-timeseries.json");
-var measurements = JsonSerializer.Deserialize<List<Measurement>>(json);
+var json = File.ReadAllText("../../overflow-timeseries.json")!;
+var arrayList = JsonSerializer.Deserialize<List<double[]>>(json)!;
+var measurements = arrayList
+    .Select(a => new Measurement((long)a[0], a[1]))
+    .ToList();
+
 if (measurements == null)
     throw new InvalidOperationException("Failed to parse JSON data.");
 
