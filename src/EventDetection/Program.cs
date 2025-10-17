@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 // Load input data
-var json = File.ReadAllText("../../overflow-timeseries.json")!;
+var json = File.ReadAllText("overflow-timeseries.json")!;
 var arrayList = JsonSerializer.Deserialize<List<double[]>>(json)!;
 var measurements = arrayList
     .Select(a => new Measurement((long)a[0], a[1]))
